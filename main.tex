@@ -1,0 +1,381 @@
+\documentclass[11pt,a4paper]{article}
+
+% ====== Pacchetti essenziali ======
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern} % font leggibile
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{physics} % \dv,\pdv,\abs,\norm
+\usepackage{siunitx}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\geometry{margin=2.2cm}
+\pgfplotsset{compat=1.18}
+\tikzset{>=latex}
+
+% ====== Macro utili ======
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\DeclareMathOperator{\Res}{Res}
+
+% ====== Ambienti stile esame ======
+\newtcolorbox{defbox}{colback=blue!3!white,colframe=blue!50!black,left=1mm,right=1mm}
+\newtcolorbox{ideabox}{colback=yellow!8!white,colframe=orange!70!black,left=1mm,right=1mm}
+\newtcolorbox{exambox}{colback=green!6!white,colframe=green!50!black,left=1mm,right=1mm}
+\newtcolorbox{alertbox}{colback=red!3!white,colframe=red!60!black,left=1mm,right=1mm}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposizione}
+\theoremstyle{definition}
+\newtheorem{example}{Esempio}
+\newtheorem{remark}{Osservazione}
+
+% Titoli compatti
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection}{0.5em}{}
+
+% ====== FRONTESPIZIO ======
+\title{\vspace{-1cm}\textbf{ANALISI 3 – Schemi Completi}\\
+\large Numeri complessi \;|\; Serie di Fourier \;|\; Funzioni olomorfe}
+\author{Preparato da: \textsc{Antonio Cioffi}}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-0.8em}
+\begin{ideabox}
+\textbf{Struttura dell'esame (3 esercizi, 10 pt ciascuno):}
+\begin{itemize}
+  \item \textbf{Numeri complessi} (90\%: radici n-esime; a volte equazioni che si riducono a radici).
+  \item \textbf{Serie di Fourier}: costruzione dei coefficienti, serie e studio di convergenza (puntuale e uniforme).
+  \item \textbf{Funzioni di variabile complessa}: dominio, olomorfia (Cauchy–Riemann) $\Rightarrow$ analiticità.
+\end{itemize}
+\textbf{Regola d'oro per il voto pieno:} mostra \emph{tutti} i passaggi con ordine, dichiara le ipotesi e le conclusioni con frase finale esplicita.
+\end{ideabox}
+
+\tableofcontents
+
+% =========================================================
+\section{Numeri complessi: forme, potenze, radici, equazioni}
+% =========================================================
+
+\subsection{Forme equivalente di un numero complesso}
+\begin{defbox}
+Sia $z=a+\ii b\in\C$. Modulo $\abs{z}=\rho=\sqrt{a^2+b^2}$, argomento $\arg z=\theta$ (non unico), argomento principale $\Arg z\in(-\pi,\pi]$.\\
+Forme:
+\[
+z=a+\ii b=\rho(\cos\theta+\ii\sin\theta)=\rho\,\e^{\ii\theta}.
+\]
+\end{defbox}
+
+\begin{ideabox}
+\textbf{Conversione rapida} $a,b\to(\rho,\theta)$: $\rho=\sqrt{a^2+b^2}$,\; $\cos\theta=\frac{a}{\rho}$,\; $\sin\theta=\frac{b}{\rho}$.\;
+Usa $\tan\theta=\frac{b}{a}$ \emph{solo} per il valore grezzo, poi \textbf{correggi il quadrante}.
+\end{ideabox}
+
+\subsection{Formula di Eulero e di De Moivre}
+\begin{defbox}
+\[
+\e^{\ii\theta}=\cos\theta+\ii\sin\theta,\qquad
+\bigl(\rho\e^{\ii\theta}\bigr)^{n}=\rho^{n}\e^{\ii n\theta}=\rho^{n}\bigl(\cos(n\theta)+\ii\sin(n\theta)\bigr).
+\]
+\end{defbox}
+
+\subsection{Radici $n$-esime di un complesso}
+\begin{theorem}[Radici n-esime]
+Sia $z=\rho\,\e^{\ii\theta}\neq0$. Le radici $n$-esime sono
+\[
+w_k=\sqrt[n]{\rho}\;\e^{\ii\frac{\theta+2k\pi}{n}}
+=\sqrt[n]{\rho}\Bigl(\cos\frac{\theta+2k\pi}{n}+\ii\sin\frac{\theta+2k\pi}{n}\Bigr),\quad k=0,1,\dots,n-1.
+\]
+Sono $n$ punti ai vertici di un poligono regolare su cerchio di raggio $\sqrt[n]{\rho}$, equispaziati di $\frac{2\pi}{n}$.
+\end{theorem}
+
+\begin{ideabox}
+\textbf{Schema d’esame per radici}:
+\begin{enumerate}[(1)]
+\item Porta $z$ in forma trig./esponenziale ($\rho$, $\theta$ con \emph{quadrante giusto}).
+\item Scrivi la formula generale $w_k$ e specifica $k=0,\dots,n-1$.
+\item Se richiesto, \textbf{ridai} le soluzioni in forma $a+\ii b$ (arrotonda solo alla fine).
+\item Disegna velocemente: cerchio di raggio $\sqrt[n]{\rho}$, marca gli $n$ angoli. Punti $\checkmark$.
+\end{enumerate}
+\end{ideabox}
+
+\subsubsection*{Mini–figura pronta (radici quarte)}
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\draw[->] (-2.2,0)--(2.2,0) node[right]{$\Re$};
+\draw[->] (0,-2.2)--(0,2.2) node[above]{$\Im$};
+\draw (0,0) circle (1.6);
+\foreach \k in {0,1,2,3}{
+  \coordinate (P\k) at ({1.6*cos(45+90*\k)},{1.6*sin(45+90*\k)});
+  \fill (P\k) circle (2pt);
+}
+\node at (1.1,1.2){$w_0$}; \node at (-1.2,1.1){$w_1$};
+\node at (-1.1,-1.2){$w_2$}; \node at (1.2,-1.1){$w_3$};
+\end{tikzpicture}
+\end{center}
+
+\subsection{Rationalizzazione coniugata (\emph{trucco salva-tempo})}
+\begin{ideabox}
+Per eliminare complessi al \textbf{denominatore}, moltiplica per il \emph{coniugato}:
+\[
+\frac{A+\ii B}{C+\ii D}
+=\frac{(A+\ii B)(C-\ii D)}{C^2+D^2}=\frac{AC+BD}{C^2+D^2}+\ii\,\frac{BC-AD}{C^2+D^2}.
+\]
+Sempre porta il risultato in $a+\ii b$ prima di passare alla forma trig./exp.
+\end{ideabox}
+
+\subsection{Equazioni tipiche nel campo complesso}
+\begin{exambox}
+\textbf{Template 1 (si riduce a radici)}: risolvi $z^n=\rho\,\e^{\ii\theta}$ con formula $w_k$.\\[0.25em]
+\textbf{Template 2} $z^m\overline{z}^{\,n}=c$ (\;con $c\in\C$):
+scrivi $z=\rho\e^{\ii\theta}\Rightarrow \overline{z}=\rho\e^{-\ii\theta}$. Allora
+$z^m\overline{z}^{\,n}=\rho^{m+n}\e^{\ii(m-n)\theta}=c$.
+Confronta moduli e argomenti:
+\[
+\rho^{m+n}=\abs{c},\qquad (m-n)\theta\equiv \Arg c \pmod{2\pi}.
+\]
+Poi ricava $z$.
+\end{exambox}
+
+\begin{example}[Stile compito]
+Risolvi $z^2\overline{z}=-16\overline{z}$ (caso tipico). \\
+\emph{Sol.} Se $\overline{z}=0$ allora $z=0$, che soddisfa l'equazione ($0=-16\cdot0$). 
+Se $\overline{z}\neq0$ si può dividere: $z^2=-16$. 
+In forma exp: $-16=16\e^{\ii(\pi+2k\pi)}$. Radici quadrate:
+\[
+z=\sqrt{16}\,\e^{\ii\frac{\pi+2k\pi}{2}}=4\,\e^{\ii\left(\frac{\pi}{2}+k\pi\right)}
+=\begin{cases}4\ii,&k=0\\ -4\ii,&k=1.\end{cases}
+\]
+Soluzioni: $z\in\{0,4\ii,-4\ii\}$. (Disegna tre punti sull’asse immaginario.)
+\end{example}
+
+% =========================================================
+\section{Serie di Fourier: costruzione e convergenza}
+% =========================================================
+
+\subsection{Setup standard su $2\pi$}
+\begin{defbox}
+Per $f$ $2\pi$–periodica, serie di Fourier:
+\[
+S_f(x)=\frac{a_0}{2}+\sum_{n=1}^\infty\left(a_n\cos nx+b_n\sin nx\right),
+\]
+\[
+a_0=\frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\,dx,\quad
+a_n=\frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos nx\,dx,\quad
+b_n=\frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\sin nx\,dx.
+\]
+\end{defbox}
+
+\begin{ideabox}
+\textbf{Scorciatoia parità}:\; $f$ pari $\Rightarrow b_n=0$;\; $f$ dispari $\Rightarrow a_0=a_n=0$.\\
+Integra su intervalli comodi (qualsiasi di ampiezza $2\pi$). Per tratti costanti/lineari, spezza e usa simmetrie.
+\end{ideabox}
+
+\subsection{Teorema di Dirichlet (convergenza puntuale) e uniforme}
+\begin{theorem}[Dirichlet, forma operativa]
+Se $f$ è \emph{regolare a tratti} su un periodo (numero finito di discontinuità di salto, derivabile a tratti), allora:
+\begin{itemize}
+\item in ogni punto di \emph{continuità} di $f$, $S_f(x)\to f(x)$;
+\item in ogni \emph{punto di salto} $x_0$, $S_f(x_0)\to \frac{f(x_0^-)+f(x_0^+)}{2}$.
+\end{itemize}
+\end{theorem}
+
+\begin{proposition}[Convergenza uniforme: regola pratica]
+Se l'estensione $2\pi$–periodica di $f$ è \textbf{continua} su $\R$, la serie $S_f$ converge \textbf{uniformemente} su $\R$. 
+Se c'è \emph{anche un solo salto}, la convergenza non è uniforme sull'intero periodo.
+\end{proposition}
+
+\begin{exambox}
+\textbf{Schema d’esame Fourier}:
+\begin{enumerate}[(1)]
+\item Disegna il \emph{periodo base} e individua parità (pari/dispari/\textit{nessuna}).
+\item Scrivi esplicitamente che $f$ è \textbf{regolare a tratti} sul periodo (vale tipicamente nei compiti).
+\item Calcola \emph{solo} i coefficienti non nulli (grazie alla parità).
+\item Scrivi $S_f(x)$.
+\item Concludi: \textbf{puntuale} via Dirichlet; \textbf{uniforme} se e solo se l’estensione periodica è continua.
+\end{enumerate}
+\end{exambox}
+
+\subsection{Formule per periodo generale $2L$}
+Se $f$ è $2L$–periodica:
+\[
+S_f(x)=\frac{a_0}{2}+\sum_{n=1}^\infty\left(a_n\cos\frac{n\pi x}{L}+b_n\sin\frac{n\pi x}{L}\right),
+\quad
+a_n=\frac{1}{L}\int_{-L}^{L} f(x)\cos\frac{n\pi x}{L}\,dx,
+\]
+\[
+b_n=\frac{1}{L}\int_{-L}^{L} f(x)\sin\frac{n\pi x}{L}\,dx.
+\]
+
+\subsection{Esempi “a stile compito”}
+
+\begin{example}[Gradino su $[0,2\pi)$]
+$f(x)=\begin{cases}\dfrac{4}{\pi^2}-x,&0\le x\le \dfrac{\pi}{2},\\[0.3em]
+0,&\dfrac{\pi}{2}<x<\pi,
+\end{cases}$
+e $2\pi$–periodica.\\
+\emph{Passi:} Disegna; non è pari né dispari; $f$ regolare a tratti $\Rightarrow$ Dirichlet applicabile. 
+Calcola $a_0,a_n,b_n$ spezzando gli integrali su $[0,\pi/2]$ e $(\pi/2,\pi)$, poi usa periodicità per $[-\pi,0)$. 
+Scrivi la serie e concludi su puntuale e uniforme (non uniforme per via dei salti).
+\end{example}
+
+\begin{example}[Dente di sega centrato (dispari)]
+$f(x)=\dfrac{\pi-x}{\pi}$ per $x\in(-\pi,\pi]$, $2\pi$–periodica.\\
+\emph{Dispari} $\Rightarrow a_0=a_n=0$. Calcola solo $b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}\frac{\pi-x}{\pi}\sin nx\,dx$.
+Conclusione: puntuale ovunque, ai salti media dei limiti; non uniforme per via dei salti.
+\end{example}
+
+\subsection{Mini–tabella integrali rapidi}
+\begin{align*}
+\int \sin nx\,dx&=-\frac{\cos nx}{n}+C,&
+\int \cos nx\,dx&=\frac{\sin nx}{n}+C,\\
+\int x\sin nx\,dx&=\frac{\sin nx}{n^2}-\frac{x\cos nx}{n}+C,&
+\int x\cos nx\,dx&=\frac{x\sin nx}{n}+\frac{\cos nx}{n^2}+C.
+\end{align*}
+
+% =========================================================
+\section{Funzioni di variabile complessa: olomorfia $\Rightarrow$ analiticità}
+% =========================================================
+
+\subsection{Derivabilità complessa e olomorfia}
+\begin{defbox}
+$f$ è derivabile (olomorfa) in $z_0$ se esiste finito
+\[
+\lim_{z\to z_0}\frac{f(z)-f(z_0)}{z-z_0},
+\]
+\textbf{indipendentemente dal percorso} nel piano.
+\end{defbox}
+
+\subsection{Scomposizione $f(x+\ii y)=u(x,y)+\ii v(x,y)$ e Cauchy–Riemann}
+\begin{theorem}[Equazioni di Cauchy–Riemann (CR)]
+Se $u,v$ sono differenziabili in un punto, $f$ è olomorfa in quel punto $\iff$
+\[
+\pdv{u}{x}=\pdv{v}{y},\qquad \pdv{u}{y}=-\pdv{v}{x}.
+\]
+\end{theorem}
+
+\begin{exambox}
+\textbf{Schema d’esame Olomorfia}:
+\begin{enumerate}[(1)]
+\item \textbf{Dominio}: vincoli dove $f$ non è definita (denominatori $\neq0$, log rami, radici).
+\item Scrivi $z=x+\ii y$ e separa $u,v$ (rationalizza se serve).
+\item Afferma che $u,v$ sono differenziabili nel dominio (combinazioni di funzioni elementari).
+\item Calcola $\partial u/\partial x$, $\partial u/\partial y$, $\partial v/\partial x$, $\partial v/\partial y$ e verifica CR.
+\item Conclusione: insieme di olomorfia $=$ (punti del dominio dove CR valgono).\\
+Frase finale: \emph{Olomorfa $\Rightarrow$ infinitamente derivabile $\Rightarrow$ analitica nello stesso insieme.}
+\end{enumerate}
+\end{exambox}
+
+\subsection{Esempi “stile compito” (razionali di $z$)}
+\begin{example}
+$f(z)=\dfrac{1-\ii z}{1+\ii z}$. \;
+Dominio: $1+\ii z\neq 0\Rightarrow z\neq \ii(-1)=-\ii$. 
+Scrivi $z=x+\ii y$, calcola $u,v$ e verifica CR su $\C\setminus\{-\ii\}$. 
+Conclusione: olomorfa e quindi analitica su $\C\setminus\{-\ii\}$.
+\end{example}
+
+\begin{example}
+$f(z)=\dfrac{1+z}{1-z}$. \;
+Dominio: $z\neq 1$. 
+Stesso schema: separa $u,v$, verifica CR su $\C\setminus\{1\}$, quindi analitica lì.
+\end{example}
+
+\subsection{Osservazioni rapide}
+\begin{itemize}
+\item Se $f$ è polinomio in $z$, allora $f$ è olomorfa su tutto $\C$.
+\item Se compaiono $\overline{z}$ in modo non banale, tipicamente \emph{non} olomorfa (CR non reggono).
+\item Funzioni razionali in $z$: olomorfe su $\C$ escluse le \emph{poli} (zeri del denominatore).
+\end{itemize}
+
+% =========================================================
+\section{Checklist finali e trucchetti da 30 e Lode}
+% =========================================================
+
+\subsection*{Numeri Complessi}
+\begin{itemize}
+\item Porta sempre in $a+\ii b$ \emph{prima} di passare a forma trig./exp.
+\item \textbf{Argomento principale}: correggi il quadrante; ricordati che non è unico ($\theta+2k\pi$).
+\item Radici: stesso modulo $\sqrt[n]{\rho}$; angoli $\dfrac{\theta+2k\pi}{n}$, $k=0,\dots,n-1$; \emph{disegno veloce}.
+\item Equazioni coniugate: passa a $\rho,\theta$ e confronta moduli/argomenti.
+\end{itemize}
+
+\subsection*{Serie di Fourier}
+\begin{itemize}
+\item Subito parità: \textbf{pari} $\Rightarrow b_n=0$;\; \textbf{dispari} $\Rightarrow a_0=a_n=0$.
+\item Spezza gli integrali dove la funzione cambia espressione e usa simmetrie.
+\item Scrivi sempre la \textbf{frase Dirichlet} (puntuale) e la riga su \textbf{uniforme}.
+\end{itemize}
+
+\subsection*{Olomorfia}
+\begin{itemize}
+\item Dominio prima di tutto (evita di “dimostrare CR” fuori dominio).
+\item CR sono \emph{necessarie e sufficienti} se $u,v$ sono differenziabili.
+\item Conclusione testuale: “olomorfa $\Rightarrow$ analitica nello stesso insieme”.
+\end{itemize}
+
+\begin{alertbox}
+\textbf{Errori da evitare}: (i) Argomento col segno/quadrante sbagliato; (ii) dimenticare $k=0,\dots,n-1$ nelle radici;
+(iii) saltare la frase finale su convergenza/olomorfia; (iv) integrali Fourier senza spezzare ai punti di salto;
+(v) non razionalizzare il denominatore quando serve.
+\end{alertbox}
+
+% =========================================================
+\section*{Appendice A: Esempi-lampo pronti}
+% =========================================================
+
+\subsection*{Radici: $w^4=3+3\ii$}
+$z=3+3\ii=\rho\,\e^{\ii\theta}$; $\rho=\sqrt{18}=3\sqrt{2}$; $\theta=\pi/4$.
+\[
+w_k=\sqrt[4]{3\sqrt{2}}\ \e^{\ii\frac{\pi/4+2k\pi}{4}},\quad k=0,1,2,3.
+\]
+
+\subsection*{Fourier: funzione dispari $f(x)=x$ su $(-\pi,\pi]$}
+$a_0=a_n=0$;\; $b_n=\frac{1}{\pi}\int_{-\pi}^{\pi}x\sin nx\,dx=\frac{2(-1)^{n+1}}{n}$.
+\[
+S(x)=\sum_{n=1}^{\infty}\frac{2(-1)^{n+1}}{n}\sin nx,\quad
+\text{puntuale ovunque, ai salti media; non uniforme (salti).}
+\]
+
+\subsection*{Olomorfia: $f(z)=\dfrac{z^2+1}{z-1}$}
+Dominio $\C\setminus\{1\}$;\; razionale in $z$ $\Rightarrow$ olomorfa su $\C\setminus\{1\}$, quindi analitica lì.
+
+% =========================================================
+\section*{Appendice B: Mini–modulistica “frasi d’esame”}
+% =========================================================
+
+\paragraph{Dirichlet (da scrivere)}
+“Si verifica che $f$ è regolare a tratti sul periodo. Per il teorema di Dirichlet, la serie di Fourier converge
+puntualmente a $f$ nei punti di continuità e alla media dei limiti nei punti di discontinuità.”
+
+\paragraph{Uniforme (continua periodica)}
+“L’estensione $2\pi$–periodica di $f$ è continua su $\R$, dunque la serie converge uniformemente su $\R$.”
+
+\paragraph{Uniforme (salti)}
+“Poiché l’estensione periodica presenta punti di discontinuità, la convergenza non è uniforme sull’intero periodo.”
+
+\paragraph{Analiticità}
+“Nei punti in cui $f$ è olomorfa, per la teoria delle funzioni olomorfe, $f$ è infinitamente derivabile e analitica.”
+
+\vfill
+\begin{center}\small
+\emph{Queste pagine sono pensate per riprodurre il taglio dei compiti passati: radici n–esime / Fourier / olomorfia. 
+Mostra i passaggi, usa le frasi standard, e marca i disegni.}
+\end{center}
+
+\end{document}
